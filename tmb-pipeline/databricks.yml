@@ -1,9 +1,12 @@
 bundle:
   name: tmb-pipeline
 
+include:
+  - resources/*.yml
+
 targets:
   dev:
     mode: development
     default: true
     workspace:
-      host: https://adb-xxx.azuredatabricks.net  # Twój host
+      host: https://dbc-180fb75b-a0c8.cloud.databricks.com

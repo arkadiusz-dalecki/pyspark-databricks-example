@@ -7,7 +7,7 @@ from pyspark.sql.window import Window
 def main():
     spark = SparkSession.builder.appName("tmb-analysis").getOrCreate()
 
-    df = (spark.table("tmb_gear")
+    df = (spark.table("workspace.default.tmb")
         .withColumn("weight", F.col("weight").cast(IntegerType()))
         .withColumn("weight_kg", F.round(F.col("weight") / 1000.0, 3))
         .withColumnRenamed("Item Name", "item_name")
@@ -32,11 +32,11 @@ def main():
 
     (summary.write.format("delta")
         .mode("overwrite")
-        .saveAsTable("tmb_gear_summary"))
+        .saveAsTable("workspace.default.tmb_gear_summary"))
 
     (df_ranked.write.format("delta")
         .mode("overwrite")
-        .saveAsTable("tmb_gear_top_per_category"))
+        .saveAsTable("workspace.default.tmb_gear_top_per_category"))
 
     print("Done. Wrote tmb_gear_summary and tmb_gear_top_per_category.")
 
