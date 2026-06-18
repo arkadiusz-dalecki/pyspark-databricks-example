@@ -1,7 +1,16 @@
 [project]
 name = "pyspark-databricks-example"
 version = "0.1.0"
-description = "Add your description here"
+description = "Example PySpark pipeline deployed to Databricks via Asset Bundles"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = []
+
+[project.optional-dependencies]
+test = [
+    "pyspark==3.5.3",
+    "pytest>=8",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tmb-pipeline/tests"]

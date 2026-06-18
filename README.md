@@ -86,3 +86,40 @@ databricks bundle destroy
 
 Domyślny target to `dev` (`mode: development`) – zasoby są prefiksowane nazwą
 użytkownika, np. `[dev your_name] tmb-analysis-dev`. Host ustawisz w `databricks.yml`.
+
+## Testowanie lokalne
+
+Logika transformacji jest wydzielona do czystych funkcji w `src/tmb_analysis.py`
+(`prepare`, `build_summary`, `build_top_per_category`), niezależnych od I/O
+(`spark.table` / `saveAsTable`). Dzięki temu można je testować lokalnym PySparkiem,
+bez Databricks i bez Unity Catalog.
+
+### Wymagania
+
+- Java 8, 11 lub 17 (PySpark 3.5 nie działa na nowszych)
+- Czyste środowisko **bez** `databricks-connect` — jego wbudowany PySpark
+  koliduje z pakietem `pyspark`. Użyj osobnego venv tylko do testów.
+
+```bash
+python3 -m venv .venv-test
+source .venv-test/bin/activate
+pip install -e ".[test]"
+```
+
+### Uruchomienie testów
+
+```bash
+# wskaż Javę 8/11/17, jeśli masz wiele wersji
+export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)   # macOS
+pytest
+```
+
+Testy (`tmb-pipeline/tests/`) tworzą lokalny `SparkSession` (`local[1]`),
+budują sztuczny DataFrame i sprawdzają agregacje oraz ranking — bez zapisu do tabel.
+
+### Test integracyjny (opcjonalnie)
+
+Pełny przepływ z prawdziwą tabelą `workspace.default.tmb` najprościej sprawdzić
+w workspace przez `databricks bundle run tmb_analysis_job`. Alternatywą jest
+[Databricks Connect](https://docs.databricks.com/dev-tools/databricks-connect/index.html),
+który wykonuje kod lokalnie, ale Spark uruchamia w Twoim workspace.

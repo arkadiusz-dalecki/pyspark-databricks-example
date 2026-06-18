@@ -3,11 +3,13 @@ __pycache__/
 *.py[cod]
 *.egg-info/
 .eggs/
+.pytest_cache/
 build/
 dist/
 
 # Virtual environments
 .venv/
+.venv-test/
 venv/
 env/
 
