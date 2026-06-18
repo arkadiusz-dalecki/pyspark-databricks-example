@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment / secrets
+.env
+*.env
+.databrickscfg
+*.pem
+*.key
+credentials.json
+
+# Databricks
+.databricks/
+.databricks-login.json
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
